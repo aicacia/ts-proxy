@@ -1,0 +1,76 @@
+{
+	"name": "@aicacia/proxy",
+	"version": "0.1.0",
+	"description": "aicacia proxy",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/aicacia/ts-proxy"
+	},
+	"module": "esm/index.js",
+	"main": "cjs/index.js",
+	"types": "types/index.d.ts",
+	"scripts": {
+		"buildTS": "tsc",
+		"buildESM": "tsc -b tsconfig.esm.json",
+		"buildBrowser": "rollup -c",
+		"build": "npm run clean && npm run buildTS && npm run buildESM && npm run buildBrowser",
+		"doc": "typedoc",
+		"prepublishOnly": "npm run build",
+		"test": "tape -r ts-node/register src/*.test.ts | tap-spec",
+		"bench": "ts-node node_modules/.bin/tape src/**/*.benchmark.{ts,tsx} | tap-spec",
+		"coverage": "nyc --reporter=lcov --check-coverage --lines=75 --require ts-node/register tape src/**/*.test.ts | tap-spec; nyc report ---reporter=text",
+		"clean": "rm -rf esm cjs browser types .nyc_output coverage",
+		"lint": "eslint . --fix",
+		"prettier": "prettier --ignore-path .eslintignore --ignore-unknown --write .",
+		"preCommit": "npm run prettier && npm run lint && npm run coverage",
+		"prepare": "husky install"
+	},
+	"keywords": [
+		"proxy"
+	],
+	"author": "Nathan Faucett",
+	"license": "(MIT OR Apache-2.0)",
+	"readmeFilename": "README.md",
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "25",
+		"@rollup/plugin-node-resolve": "15",
+		"@rollup/plugin-terser": "0",
+		"@rollup/plugin-typescript": "11",
+		"@types/tape": "5",
+		"@types/asap": "2",
+		"@typescript-eslint/eslint-plugin": "6",
+		"@typescript-eslint/parser": "6",
+		"eslint": "8",
+		"eslint-config-prettier": "9",
+		"eslint-plugin-prettier": "5",
+		"husky": "8",
+		"nyc": "15",
+		"parcel": "2",
+		"prettier": "3",
+		"rollup": "4",
+		"rollup-plugin-esm-import-to-url": "2",
+		"tap-nyc": "1",
+		"tap-spec": "5",
+		"tape": "5",
+		"ts-node": "10",
+		"tslib": "2",
+		"typedoc": "0",
+		"typescript": "5"
+	},
+	"peerDependencies": {
+		"tslib": "2"
+	},
+	"nyc": {
+		"include": [
+			"src"
+		],
+		"exclude": [
+			"src/**/*.test.*",
+			"src/**/*.benchmark.*"
+		],
+		"extension": [
+			".ts",
+			".tsx"
+		]
+	}
+}
